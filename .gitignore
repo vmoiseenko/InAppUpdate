@@ -17,6 +17,9 @@ out/
 .gradle/
 build/
 
+# Idea files
+.idea/
+
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -63,3 +66,5 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+*.jks
+app/release/

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">InAppUpdates</string>
+    <string name="app_version">App version: %d, version name: %s</string>
+    <string name="app_updates_works">InApp updates actually works!</string>
+    <string name="finish_update">To complete the update now select \"Restart\", or choose \"Postpone\" to automatically install updates on the next launch.</string>
+    <string name="restart">Restart</string>
+    <string name="postpone">Postpone</string>
+</resources>
