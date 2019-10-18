@@ -1,8 +1,19 @@
 <resources>
     <string name="app_name">InAppUpdates</string>
     <string name="app_version">App version: %d, version name: %s</string>
-    <string name="app_updates_works">InApp updates actually works!</string>
     <string name="finish_update">To complete the update now select \"Restart\", or choose \"Postpone\" to automatically install updates on the next launch.</string>
     <string name="restart">Restart</string>
     <string name="postpone">Postpone</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_activity_login">Biometrics</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="sign_in">"Sign in"</string>
+    <string name="touch_fingerprint">Touch the fingerprint sensor</string>
+
+    <string name="fingerprint_hint">Touch sensor</string>
+    <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
+    <string name="fingerprint_success">Fingerprint recognized</string>
 </resources>

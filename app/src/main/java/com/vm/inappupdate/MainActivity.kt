@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -99,15 +100,13 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
                 UpdateAvailability.UPDATE_AVAILABLE -> {
                     Log.d(DEBUG, "UpdateAvailability UPDATE_AVAILABLE")
 
-                    if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                    if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
 
                         Log.d(DEBUG, "UpdateTypeAllowed (AppUpdateType.FLEXIBLE)")
 
                         appUpdateManager.startUpdateFlowForResult(
-                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
                             appUpdateInfo,
-                            // Or 'AppUpdateType.IMMEDIATE for immediate updates.
-                            AppUpdateType.FLEXIBLE,
+                            AppUpdateType.IMMEDIATE,
                             // The current activity.
                             this,
                             REQUEST_CODE_UPDATE
