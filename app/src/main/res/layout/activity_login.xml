@@ -56,11 +56,21 @@
                 android:hint="@string/prompt_password"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword"
+                android:inputType="textVisiblePassword"
                 android:selectAllOnFocus="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
+
+        <Button
+                android:id="@+id/register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="@string/action_register"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@id/login"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
                 android:id="@+id/login"

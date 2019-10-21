@@ -1,27 +1,31 @@
 package com.vm.inappupdate.ui.login
 
 import android.annotation.TargetApi
-import android.hardware.fingerprint.FingerprintManager
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.security.keystore.KeyPermanentlyInvalidatedException
+import android.security.keystore.KeyProperties
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricPrompt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.vm.inappupdate.R
 import com.vm.inappupdate.biometrics.FingerprintUiHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fingerprint_bottom_sheet.*
-import android.security.keystore.KeyProperties
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyPermanentlyInvalidatedException
 import java.io.IOException
 import java.security.*
 import java.security.cert.CertificateException
+import java.util.concurrent.Executors
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.NoSuchPaddingException
@@ -42,8 +46,26 @@ class LoginActivity : AppCompatActivity(), FingerprintUiHelper.Callback {
         setContentView(R.layout.activity_login)
 
         sheetBehavior = BottomSheetBehavior.from(findViewById(R.id.fingerprint_bottom_sheet))
-        login.setOnClickListener { popupFingerprintAuth() }
+        login.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                BiometricPromptManager(this).decryptPrompt(
+                    failedAction = { showToast("failed to encryptPrompt") },
+                    successAction = { password.setText(String(it))}
+                )
+            }
+        }
 
+        register.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                BiometricPromptManager(this).encryptPrompt(
+                    data = password.text.toString().toByteArray(),
+                    failedAction = { showToast("failed to encryptPrompt") },
+                    successAction = {
+                        showToast("encrypted: $it")
+                    }
+                )
+            }
+        }
     }
 
     private fun popupFingerprintAuth() {
@@ -56,6 +78,41 @@ class LoginActivity : AppCompatActivity(), FingerprintUiHelper.Callback {
             fingerprintLabel,
             this
         )
+
+    }
+
+    private fun biometricsPrompt(){
+        val activity: FragmentActivity = this
+        val executor = Executors.newSingleThreadExecutor()
+        val biometricPrompt = BiometricPrompt(activity, executor, object : BiometricPrompt.AuthenticationCallback() {
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                    Log.d("TEST","BiometricPrompt.ERROR_NEGATIVE_BUTTON")
+                } else {
+                    Log.d("TEST","unrecoverable error has been encountered and the operation is complete")
+                }
+            }
+
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                Log.d("TEST","biometric is recognized")
+            }
+
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                Log.d("TEST","biometric is valid but not recognized.")
+            }
+        })
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Sign in")
+            .setDescription("Set the description to display")
+            .setNegativeButtonText("Cancel")
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
 
     }
 
@@ -140,8 +197,12 @@ class LoginActivity : AppCompatActivity(), FingerprintUiHelper.Callback {
 
     companion object {
         private const val ANDROID_KEY_STORE = "AndroidKeyStore"
+        private const val ENCRYPTED_VALUE = "EncryptedValue"
     }
 
+    fun AppCompatActivity.showToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+    }
 }
 
 

@@ -77,6 +77,8 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
                 else -> Log.d(DEBUG, "Update flow unknown! Result code: $resultCode")
             }
             checkForUpdatesAuto = false
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
