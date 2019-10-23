@@ -13,6 +13,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="sign_in">"Sign in"</string>
     <string name="touch_fingerprint">Touch the fingerprint sensor</string>
+    <string name="encrypted">Encrypted value: </string>
 
     <string name="fingerprint_hint">Touch sensor</string>
     <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
